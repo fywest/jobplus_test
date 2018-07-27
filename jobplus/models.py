@@ -139,9 +139,8 @@ class CompanyDetail(Base):
     __tablename__ = 'company_detail'
 
     id = db.Column(db.Integer, primary_key=True)
-    slug = db.Column(db.String(24), nullable=False, index=True, unique=True)
-    logo = db.Column(db.String(64), nullable=False)
-    site = db.Column(db.String(64), nullable=False)
+    logo = db.Column(db.String(256), nullable=False)
+    site = db.Column(db.String(128), nullable=False)
     location = db.Column(db.String(24), nullable=False)
     # 一句话描述
     description = db.Column(db.String(100))
@@ -155,6 +154,10 @@ class CompanyDetail(Base):
     team_introduction = db.Column(db.String(256))
     # 公司福利，多个福利用分号隔开，最多 10 个
     welfares = db.Column(db.String(256))
+    # 公司领域
+    field = db.Column(db.String(128))
+    # 融资进度
+    finance_stage = db.Column(db.String(128))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='SET NULL'))
     user = db.relationship('User', uselist=False, backref=db.backref('company_detail', uselist=False))
 
@@ -179,11 +182,15 @@ class Job(Base):
     # 是否在招聘
     is_open = db.Column(db.Boolean, default=True)
     company_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))
-    company = db.relationship('User', uselist=False)
+    company = db.relationship('User', uselist=False, backref=db.backref('jobs', lazy='dynamic'))
     views_count = db.Column(db.Integer, default=0)
 
     def __repr__(self):
         return '<Job {}>'.format(self.name)
+
+    @property
+    def tag_list(self):
+        return self.tags.split(',')
 
 
 class Dilivery(Base):
@@ -202,4 +209,5 @@ class Dilivery(Base):
     status = db.Column(db.SmallInteger, default=STATUS_WAITING)
     # 企业回应
     response = db.Column(db.String(256))
+
 
