@@ -50,6 +50,8 @@ class User(Base, UserMixin):
     # 企业用户详情
     detail = db.relationship('CompanyDetail', uselist=False)
 
+    is_disable = db.Column(db.Boolean, default=False)
+
     def __repr__(self):
         return '<User:{}>'.format(self.name)
 
