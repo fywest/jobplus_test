@@ -1,3 +1,4 @@
+# -*- coding:utf8 -*-
 class BaseConfig(object):
     SECRET_KEY = 'very secret key'
     INDEX_PER_PAGE = 9
