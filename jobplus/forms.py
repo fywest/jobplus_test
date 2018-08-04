@@ -1,3 +1,4 @@
+# -*- coding:utf8 -*-
 import os
 from flask import url_for
 from flask_wtf import FlaskForm
